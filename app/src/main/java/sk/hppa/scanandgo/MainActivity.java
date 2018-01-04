@@ -75,7 +75,11 @@ public class MainActivity extends Activity {
 //                runOneDrive();
                 mSaver = Saver.createSaver(ONEDRIVE_APP_ID);
                 File f = new File (pathScanPicture);
-                mSaver.startSaving((Activity) v.getContext(), "xxxxx.jpg", Uri.fromFile(f));
+
+                Uri scanUri = FileProvider.getUriForFile(MainActivity.this,
+                        BuildConfig.APPLICATION_ID + ".provider", f);
+
+                mSaver.startSaving((Activity) v.getContext(), "xxxxx.jpg", scanUri);
                 return false;
             }
         });
@@ -138,7 +142,7 @@ public class MainActivity extends Activity {
             if (photoFile!= null) {
                 result = photoFile.getAbsolutePath();
                 takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                Uri photoURI = FileProvider.getUriForFile(this, "sk.hppa.scanandgo.android.fileprovider", photoFile);
+                Uri photoURI = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, PIC_GET_FROM_CAMERA);
             }
